@@ -24,7 +24,7 @@ jobs:
     - name: Push Zip to S3
       uses: jakejarvis/s3-sync-action@v0.3.1
       env:
-        SOURCE_DIR: 'result.zip'
+        SOURCE_DIR: 'abc'
         AWS_REGION: 'us-east-1'
         AWS_S3_BUCKET: 'asad-bucket'
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

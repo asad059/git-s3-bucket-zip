@@ -1,4 +1,4 @@
-name: zip transfer
+name: scp files
 
 on:
   # Runs on pushes targeting the default branch
@@ -20,6 +20,16 @@ jobs:
       with:
           files: abc/ main-app.html
           dest: result.zip
+      
+    - name: Push Zip to S3
+      uses: jakejarvis/s3-sync-action@v0.3.1
+      env:
+        SOURCE_DIR: 'result.zip'
+        AWS_REGION: 'us-east-1'
+        AWS_S3_BUCKET: 'asad-bucket'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
       with:
@@ -29,3 +39,14 @@ jobs:
         port: ${{ secrets.PORT }}
         source: "result.zip"
         target: "/home/ubuntu/"
+    - name: executing remote ssh commands to cp files
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            key: ${{ secrets.SSH2 }}
+            port: ${{ secrets.PORT }}
+            script: |
+               sudo cp -R /home/ubuntu/index.html /var/www/html/
+               sudo chown -R www-data:www-data /var/www/html/index.html
+               sudo systemctl restart apache2.service

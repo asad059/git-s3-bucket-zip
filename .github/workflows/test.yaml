@@ -1,0 +1,31 @@
+name: zip transfer
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches:
+       - main
+  pull_request:
+    branches: ["main"]
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: vimtor/action-zip@v1
+      with:
+          files: abc/ main-app.html
+          dest: result.zip
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH2 }}
+        port: ${{ secrets.PORT }}
+        source: "result.zip"
+        target: "/home/ubuntu/"

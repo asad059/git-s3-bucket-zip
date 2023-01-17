@@ -17,8 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - if: ${{github.ref == 'refs/heads/main'}}
-      run: echo "we are in main branch"
-    - name: a 
+      #run: echo "we are in main branch" 
       uses: jakejarvis/s3-sync-action@v0.3.1
       env:
         SOURCE_DIR: 'abc'
@@ -27,8 +26,8 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     - if: ${{github.ref == 'refs/heads/dev'}}
-      run: echo "we are in dev branch"
-    - name: b 
+      #run: echo "we are in dev branch"
+    #- name: b 
       uses: jakejarvis/s3-sync-action@v0.3.1
       env:
         SOURCE_DIR: 'xyz'

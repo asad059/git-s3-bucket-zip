@@ -1,4 +1,4 @@
-name: if condition branch message
+name: github to s3 buckets
 
 on:
   # Runs on pushes targeting the default branch
@@ -18,5 +18,23 @@ jobs:
     - uses: actions/checkout@v3
     - if: ${{github.ref == 'refs/heads/main'}}
       run: echo "we are in main branch"
+    - name: a 
+      uses: jakejarvis/s3-sync-action@v0.3.1
+      env:
+        SOURCE_DIR: 'abc'
+        AWS_REGION: 'us-east-1'
+        AWS_S3_BUCKET: 'asad-bucket'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     - if: ${{github.ref == 'refs/heads/dev'}}
       run: echo "we are in dev branch"
+    - name: b 
+      uses: jakejarvis/s3-sync-action@v0.3.1
+      env:
+        SOURCE_DIR: 'xyz'
+        AWS_REGION: 'us-east-1'
+        AWS_S3_BUCKET: 'xyz-bucket-xyz'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  
+    
